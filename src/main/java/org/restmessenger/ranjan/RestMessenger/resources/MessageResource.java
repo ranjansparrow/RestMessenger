@@ -74,15 +74,41 @@ public class MessageResource {
 	@Path("/{messageId}")
 	public Message getMessage(@PathParam("messageId") long id, @Context UriInfo uriinfo) {
 		Message message = ms.getMessage(id);
+				
+		
+		message.addLink(getUriForSelf(uriinfo,message), "self");
+		message.addLink(getUriForProfile(uriinfo, message), "profile");
+		message.addLink(getUriForComments(uriinfo, message), "Comments");
+		return message;
+	}
+
+	private String getUriForSelf(UriInfo uriinfo, Message message) {
 		String uri = uriinfo.getBaseUriBuilder()
 				.path(MessageResource.class)
 				.path(Long.toString(message.getId()))
 				.build()
 				.toString();
-				
-		
-		message.addLink(uri, "self");
-		return message;
+		return uri;
+	}
+	
+	private String getUriForProfile(UriInfo uriinfo, Message message){
+		String uri = uriinfo.getBaseUriBuilder()
+				.path(ProfileResource.class)
+				.path(message.getAuthor())
+				.build()
+				.toString();
+		return uri;
+	}
+	
+	private String getUriForComments(UriInfo uriinfo, Message message){
+		String uri = uriinfo.getBaseUriBuilder()
+				.path(MessageResource.class)
+				.path(MessageResource.class, "getCommentResource")
+				.path(CommentResource.class)
+				.resolveTemplate("messageId", message.getId())
+				.build()
+				.toString();
+		return uri;
 	}
 	
 	
