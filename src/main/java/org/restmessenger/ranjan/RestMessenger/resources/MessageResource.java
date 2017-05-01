@@ -17,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.ws.rs.core.UriInfo;
 
 import org.restmessenger.ranjan.RestMessenger.model.Message;
@@ -31,7 +32,8 @@ public class MessageResource {
 	MessageService ms = new MessageService();
 
 	@GET
-	public List<Message> getMessages(@BeanParam MessageFilterBean filterbean)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Message> getJSONMessages(@BeanParam MessageFilterBean filterbean)
 
 	{
 		if (filterbean.getYear() > 0) {
@@ -46,6 +48,24 @@ public class MessageResource {
 		return ms.getAllMessage();
 	}
 
+	@GET
+	@Produces(MediaType.TEXT_XML)
+	public List<Message> getXMLMessages(@BeanParam MessageFilterBean filterbean)
+
+	{
+		if (filterbean.getYear() > 0) {
+			System.out.println("I am here");
+			return ms.getAllMessagesForYear(filterbean.getYear());
+		}
+
+		if (filterbean.getStart() >= 0 && filterbean.getSize() > 0) {
+			return ms.getAllMessagesPaginated(filterbean.getStart(), filterbean.getSize());
+		}
+
+		return ms.getAllMessage();
+	}
+
+	
 	@POST
 	public Response addMessage(Message message, @Context UriInfo uriinfo) {
 		Message newMessage = ms.addMessage(message);

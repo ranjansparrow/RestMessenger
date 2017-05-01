@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.restmessenger.ranjan.RestMessenger.database.DatabaseClass;
 import org.restmessenger.ranjan.RestMessenger.exception.DataNotFoundException;
 import org.restmessenger.ranjan.RestMessenger.model.Message;
-
+@XmlRootElement
 public class MessageService {
 	
 	private Map<Long,Message> messages = DatabaseClass.getMessage();
