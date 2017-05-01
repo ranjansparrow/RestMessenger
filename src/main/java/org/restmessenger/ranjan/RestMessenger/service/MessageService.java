@@ -1,6 +1,7 @@
 package org.restmessenger.ranjan.RestMessenger.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,33 @@ public class MessageService {
 	private Map<Long,Message> messages = DatabaseClass.getMessage();
 	
 	
-	public List<Message> getAllMessage(){
+	public MessageService(){
 		Message m1 = new Message(1, "Rest", "Ranjan");
 		Message m2 = new Message(2, "Hellow", "Ranjan");
 		messages.put(1l, m1);
 		messages.put(2l, m2);
+	}
+	
+	public List<Message> getAllMessage(){		
 		return new ArrayList<Message>(messages.values());
+	}
+	
+	public List<Message> getAllMessagesForYear(int year){
+		List<Message> messagesForYear = new ArrayList<>();
+		Calendar cal = Calendar.getInstance();
+		for(Message message : messages.values()){
+			cal.setTime(message.getCreated());
+			if(cal.get(Calendar.YEAR)==year){
+				messagesForYear.add(message);
+			}
+		}
+		return messagesForYear;
+	}
+	
+	public List<Message> getAllMessagesPaginated(int start, int size){
+		ArrayList<Message> list = new ArrayList<Message>(messages.values());
+		
+		return list.subList(start, size);
 	}
 	
 	public Message getMessage(long id){

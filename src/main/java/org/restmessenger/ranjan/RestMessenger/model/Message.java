@@ -2,13 +2,10 @@ package org.restmessenger.ranjan.RestMessenger.model;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Message {
 	private long id;
 	private String message;
-	private Date creatd;
+	private Date created;
 	private String author;
 	
 	public Message(){
@@ -19,6 +16,7 @@ public class Message {
 		this.id = id;
 		this.message = message;
 		this.author = author;
+		this.created = new Date(2017);
 	}
 	public long getId() {
 		return id;
@@ -32,11 +30,11 @@ public class Message {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Date getCreatd() {
-		return creatd;
+	public Date getCreated() {
+		return created;
 	}
-	public void setCreatd(Date creatd) {
-		this.creatd = creatd;
+	public void setCreatd(Date created) {
+		this.created = created;
 	}
 	public String getAuthor() {
 		return author;
