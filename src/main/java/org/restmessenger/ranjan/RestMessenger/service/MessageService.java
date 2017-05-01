@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.restmessenger.ranjan.RestMessenger.database.DatabaseClass;
+import org.restmessenger.ranjan.RestMessenger.exception.DataNotFoundException;
 import org.restmessenger.ranjan.RestMessenger.model.Message;
 
 public class MessageService {
@@ -44,7 +45,11 @@ public class MessageService {
 	}
 	
 	public Message getMessage(long id){
-		return messages.get(id);
+		Message message = messages.get(id);
+		if(message == null){
+			throw new DataNotFoundException("Message with id " + id  + "Not found");
+		}
+		return message;
 	}
 	
 	public Message addMessage(Message message){
