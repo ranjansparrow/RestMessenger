@@ -7,7 +7,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.restmessenger.ranjan.RestMessenger.model.ErrorMessage;
 
-@Provider
+
 public class GenericExceptionHandler implements ExceptionMapper<Throwable> {
 
 	@Override

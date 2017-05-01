@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.restmessenger.ranjan.RestMessenger.database.DatabaseClass;
 import org.restmessenger.ranjan.RestMessenger.model.Comment;
+import org.restmessenger.ranjan.RestMessenger.model.ErrorMessage;
 import org.restmessenger.ranjan.RestMessenger.model.Message;
 
 public class CommentService {
@@ -25,6 +30,19 @@ public class CommentService {
 	}
 	
 	public Comment getComment(long messageId,long commentId){
+		ErrorMessage errorMessage = new ErrorMessage("Not Found",
+				500, "http://www.ranjansapkota.com.np");
+		Response response = Response.status(Status.NOT_FOUND).
+								entity(errorMessage).
+								build();
+		Message message = messages.get(messageId);
+		if(message == null){
+			throw new WebApplicationException(response);
+		}
+		Comment comment = comments.get(commentId);
+		if(comment == null){
+			throw new WebApplicationException(response);
+		}
 		Map<Long,Comment> comments = messages.get(messageId).getComments();
 		return comments.get(commentId);
 	}
